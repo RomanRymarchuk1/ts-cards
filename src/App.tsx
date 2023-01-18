@@ -1,6 +1,6 @@
+import AppRoutes from "./AppRoutes";
 import "./index.scss";
-import Home from "./pages/Home/Home";
 
-const App = () => <Home />;
+const App = () => <AppRoutes />;
 
 export default App;
