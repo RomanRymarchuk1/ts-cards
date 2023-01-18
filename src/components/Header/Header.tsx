@@ -1,6 +1,8 @@
 import { ReactComponent as SearchIcon } from "./assets/Search.svg";
 import { InputBase, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { useDispatch } from "react-redux";
+import { setFilteredData } from "../../store/slices/cardsSlice";
 
 const Search = styled("div")(() => ({
    position: "relative",
@@ -32,16 +34,34 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
    width: "100%",
 }));
 
-const Header = () => (
-   <header>
-      <Typography variant="h3">Filter by keywords</Typography>
-      <Search>
-         <SearchIconWrapper>
-            <SearchIcon />
-         </SearchIconWrapper>
-         <StyledInputBase placeholder="Search..." />
-      </Search>
-   </header>
-);
+const Header = () => {
+   const dispatch = useDispatch();
+
+   return (
+      <header>
+         <Typography variant="h3">Filter by keywords</Typography>
+         <Search>
+            <SearchIconWrapper>
+               <SearchIcon />
+            </SearchIconWrapper>
+            <StyledInputBase
+               onChange={(e) => {
+                  const value = e.target.value;
+
+                  if (value[value.length - 1] === " ") {
+                     const words = value
+                        .split(" ")
+                        .slice(0, -1)
+                        .filter((word) => word !== "");
+
+                     dispatch(setFilteredData(words));
+                  }
+               }}
+               placeholder="Search..."
+            />
+         </Search>
+      </header>
+   );
+};
 
 export default Header;
