@@ -12,10 +12,10 @@ const MyButton = styled("button")(() => ({
 }));
 
 const CustomButton = (props: any) => {
-   const { mt, onClick, children } = props;
+   const { m, onClick, children } = props;
 
    return (
-      <MyButton sx={{ mt: mt }} onClick={onClick}>
+      <MyButton sx={{ m: m }} onClick={onClick}>
          {children}
       </MyButton>
    );
