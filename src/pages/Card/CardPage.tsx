@@ -1,10 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
+import { useEffect } from "react";
 import { Box, CircularProgress, Paper, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { ReactComponent as Arrow } from "./assets/ArrowLeft.svg";
 import { CustomButton } from "../../components";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { useEffect } from "react";
 import { fetchCardById, removeCurrentCard } from "../../store/slices/cardsSlice";
 
 const BannerImg = styled(Box)(() => ({
@@ -35,18 +37,11 @@ const Description = styled(Typography)(() => ({
    margin: "50px 0",
 }));
 
-interface Card {
-   title: string;
-   id: number;
-   imageUrl: string;
-   summary: string;
-}
-
 const CardPage = () => {
    const navigate = useNavigate();
    const dispatch = useAppDispatch();
    const { id }: any = useParams();
-   const card = useAppSelector((store) => store.cards.currentCard) as Card;
+   const card: any = useAppSelector((store) => store.cards.currentCard);
    const isLoading: boolean = useAppSelector((store) => store.cards.isCurrentCardLoading);
 
    useEffect(() => {
