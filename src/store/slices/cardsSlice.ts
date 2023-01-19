@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { ICardsState, ICard } from "../../models";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { textReduction, createReg } from "../../utils";
 
 const initialState: ICardsState = {
@@ -17,8 +17,9 @@ export const fetchCardsData = createAsyncThunk("cards/fetchCardsData", async (_,
       const { data } = await axios.get("https://api.spaceflightnewsapi.net/v3/articles").then((data) => data);
 
       return data;
-   } catch (err: any) {
-      return rejectWithValue(err.response);
+   } catch (err: unknown) {
+      const error = err as AxiosError;
+      return rejectWithValue(error.response);
    }
 });
 
@@ -29,8 +30,9 @@ export const fetchCardById = createAsyncThunk(
          const { data } = await axios.get(`https://api.spaceflightnewsapi.net/v3/articles/${id}`).then((data) => data);
 
          return data;
-      } catch (err: any) {
-         return rejectWithValue(err.response);
+      } catch (err: unknown) {
+         const error = err as AxiosError;
+         return rejectWithValue(error.response);
       }
    }
 );
