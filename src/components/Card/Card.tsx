@@ -1,11 +1,12 @@
-import { CardContent, CardMedia, Card as MuiCard, Typography, styled } from "@mui/material";
+import { CardContent, CardMedia, Card as MuiCard, Typography, styled, Stack } from "@mui/material";
 import { ReactComponent as Arrow } from "./assets/ArrowRight.svg";
 import { ReactComponent as Date } from "./assets/Date.svg";
 import { CustomButton } from "..";
-import { Stack } from "@mui/system";
-import { textReduction } from "../../utils/textReduction";
+import { textReduction, dateConvesion, textAllocator } from "../../utils";
 import { useNavigate } from "react-router-dom";
-import dateConvesion from "../../utils/dateСonversion";
+import parse from "html-react-parser";
+import { useAppSelector } from "../../hooks/hooks";
+import { CardProps } from "../../models";
 
 const CardWrapper = styled(MuiCard)(() => ({
    width: "400px",
@@ -15,9 +16,10 @@ const CardWrapper = styled(MuiCard)(() => ({
    boxSizing: "border-box",
 }));
 
-const Card = ({ cardData }: any) => {
+const Card = ({ cardData }: CardProps) => {
    const navigate = useNavigate();
-   const { title, id, imageUrl, summary, publishedAt }: any = cardData;
+   const { title, id, imageUrl, summary, publishedAt } = cardData;
+   const keyWords = useAppSelector((store) => store.cards.keyWords);
 
    const onClick = (): void => {
       navigate(`/${id}`);
@@ -35,11 +37,11 @@ const Card = ({ cardData }: any) => {
             </Stack>
 
             <Typography sx={{ paddingTop: "25px" }} variant="h2">
-               {title}
+               {keyWords.length > 0 ? parse(textAllocator(title, keyWords, false)) : title}
             </Typography>
 
             <Typography sx={{ paddingTop: "20px" }} variant="body1">
-               {textReduction(summary, 100)}
+               {keyWords.length > 0 ? parse(textAllocator(summary, keyWords, true)) : textReduction(summary, 100)}
             </Typography>
 
             <CustomButton onClick={onClick} m="20px 0 0 0">
