@@ -1,44 +1,16 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { ICardsState, ICard } from "../../models";
 import axios from "axios";
+import { textReduction, createReg } from "../../utils";
 
-interface CardsState {
-   data: CardsData[];
-   currentCard: null | {};
-   cards: CardsData[];
-   isCardsLoading: boolean;
-   isCurrentCardLoading: boolean;
-}
-
-interface CardsData {
-   id: number;
-   featured: boolean;
-   title: string;
-   url: string;
-   imageUrl: string;
-   newsSite: string;
-   summary: string;
-   publishedAt: string;
-   launches: [
-      {
-         id: string;
-         provider: string;
-      }
-   ];
-   events: [
-      {
-         id: string;
-         provider: string;
-      }
-   ];
-}
-
-const initialState = {
+const initialState: ICardsState = {
    data: [],
-   currentCard: null,
+   currentCard: {},
    cards: [],
+   keyWords: [],
    isCardsLoading: false,
    isCurrentCardLoading: false,
-} as CardsState;
+};
 
 export const fetchCardsData = createAsyncThunk("cards/fetchCardsData", async (_, { rejectWithValue }) => {
    try {
@@ -69,31 +41,41 @@ const cardsSlice = createSlice({
 
    reducers: {
       removeCurrentCard: (state) => {
-         state.currentCard = null;
+         state.currentCard = {};
+      },
+
+      setKeyWords: (state, action: PayloadAction<string[]>): void => {
+         state.keyWords = action.payload;
+      },
+
+      resetCardsAndKeyWords: (state) => {
+         state.cards = state.data;
+         state.keyWords = [];
       },
 
       setFilteredData: (state, action: PayloadAction<string[]>) => {
          state.isCardsLoading = true;
+         const keyWordsArr = action.payload;
+         const intermediateArray: ICard[] = [];
 
-         const intermediateArray: CardsData[] = [];
+         state.data.forEach((card) => {
+            let isAdded: boolean = false;
 
-         state.data.filter((card) => {
-            const titleWords: string[] = card.title.split(" ");
-            const descriptionWords: string[] = card.summary.split(" ");
-            const intermediateArrayLangth = intermediateArray.length;
+            keyWordsArr.forEach((keyWord) => {
+               const re = createReg(keyWord);
 
-            titleWords.forEach((titleWord) => {
-               if (action.payload.includes(titleWord)) {
-                  const intermediateCard = { ...card };
-                  intermediateArray.unshift(intermediateCard);
+               if (re.test(card.title) && !isAdded) {
+                  intermediateArray.unshift(card);
+                  isAdded = true;
+                  return;
+               }
+
+               if (re.test(textReduction(card.summary, 100)) && !isAdded) {
+                  intermediateArray.push(card);
+                  isAdded = true;
+                  return;
                }
             });
-
-            if (intermediateArrayLangth === intermediateArray.length) {
-               descriptionWords.forEach((descriptionWord) => {
-                  if (action.payload.includes(descriptionWord)) intermediateArray.push(card);
-               });
-            }
 
             state.cards = intermediateArray;
             state.isCardsLoading = false;
@@ -106,7 +88,7 @@ const cardsSlice = createSlice({
          state.isCardsLoading = true;
       });
 
-      builder.addCase(fetchCardsData.fulfilled, (state, action: PayloadAction<[]>) => {
+      builder.addCase(fetchCardsData.fulfilled, (state, action: PayloadAction<ICard[]>) => {
          state.data = action.payload;
          state.cards = action.payload;
          state.isCardsLoading = false;
@@ -120,7 +102,7 @@ const cardsSlice = createSlice({
          state.isCurrentCardLoading = true;
       });
 
-      builder.addCase(fetchCardById.fulfilled, (state, action: PayloadAction<{}>) => {
+      builder.addCase(fetchCardById.fulfilled, (state, action: PayloadAction<ICard>) => {
          state.currentCard = action.payload;
          state.isCurrentCardLoading = false;
       });
@@ -131,6 +113,6 @@ const cardsSlice = createSlice({
    },
 });
 
-export const { removeCurrentCard, setFilteredData } = cardsSlice.actions;
+export const { removeCurrentCard, setKeyWords, setFilteredData, resetCardsAndKeyWords } = cardsSlice.actions;
 
 export default cardsSlice.reducer;
