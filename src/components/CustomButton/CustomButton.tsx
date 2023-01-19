@@ -1,4 +1,5 @@
 import { styled } from "@mui/material/styles";
+import { CustomButtonProps } from "../../models";
 
 const MyButton = styled("button")(() => ({
    background: "none",
@@ -11,7 +12,7 @@ const MyButton = styled("button")(() => ({
    padding: "0",
 }));
 
-const CustomButton = (props: any) => {
+const CustomButton = (props: CustomButtonProps) => {
    const { m, onClick, children } = props;
 
    return (
