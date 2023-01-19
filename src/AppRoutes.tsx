@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import HomePage from "./pages/Home/HomePage";
-import CardPage from "./pages/Card/CardPage";
+import { HomePage, CardPage } from "./pages";
 
 const AppRoutes = () => (
    <Routes>
