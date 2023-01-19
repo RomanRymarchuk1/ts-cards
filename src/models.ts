@@ -1,3 +1,5 @@
+import { MouseEventHandler, ReactNode } from "react";
+
 export interface ICardsState {
    data: ICard[];
    currentCard: ICard | {};
@@ -28,4 +30,14 @@ export interface ICard {
          provider: string;
       }
    ];
+}
+
+export interface CardProps {
+   cardData: ICard;
+}
+
+export interface CustomButtonProps {
+   m: string;
+   onClick: MouseEventHandler;
+   children: string | ReactNode;
 }
