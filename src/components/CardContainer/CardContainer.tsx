@@ -32,7 +32,7 @@ const CardContainer = () => {
    const cardsRender = (data: ICard[]) => (
       <>
          <ResultsCount variant="h3">Results: {data.length}</ResultsCount>
-         <Stack sx={{ mt: "50px", gap: "45px", flexDirection: "row", flexWrap: "wrap" }}>
+         <Stack sx={{ mt: "50px", gap: "45px", flexDirection: "row", flexWrap: "wrap", justifyContent: "center" }}>
             {data.map((cardData: any) => (
                <Card key={cardData.id} cardData={cardData} />
             ))}
