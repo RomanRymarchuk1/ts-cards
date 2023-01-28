@@ -1,5 +1,5 @@
 import { styled } from "@mui/material/styles";
-import { CustomButtonProps } from "../../models";
+import React from "react";
 
 const MyButton = styled("button")(() => ({
    background: "none",
@@ -11,6 +11,12 @@ const MyButton = styled("button")(() => ({
    color: "rgba(54, 54, 54, 1)",
    padding: "0",
 }));
+
+interface CustomButtonProps {
+   m: string;
+   onClick: React.MouseEventHandler<HTMLButtonElement>;
+   children: React.ReactNode;
+}
 
 const CustomButton = (props: CustomButtonProps) => {
    const { m, onClick, children } = props;

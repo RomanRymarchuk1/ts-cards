@@ -40,13 +40,14 @@ const Description = styled(Typography)(() => ({
 const CardPage = () => {
    const navigate = useNavigate();
    const dispatch = useAppDispatch();
-   const { id }: any = useParams();
-   const card: any = useAppSelector((store) => store.cards.currentCard);
-   const isLoading: boolean = useAppSelector((store) => store.cards.isCurrentCardLoading);
+   const { id } = useParams();
+   const card = useAppSelector((store) => store.cards.currentCard);
+   const isLoading = useAppSelector((store) => store.cards.isCurrentCardLoading);
 
    useEffect(() => {
-      dispatch(fetchCardById(id));
-
+      if (typeof id === "string") {
+         dispatch(fetchCardById(id));
+      }
       return () => {
          dispatch(removeCurrentCard());
       };

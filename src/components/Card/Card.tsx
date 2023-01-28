@@ -6,7 +6,7 @@ import { textReduction, dateConvesion, textAllocator } from "../../utils";
 import { useNavigate } from "react-router-dom";
 import parse from "html-react-parser";
 import { useAppSelector } from "../../hooks/hooks";
-import { CardProps } from "../../models";
+import { ICard } from "../../models";
 
 const CardWrapper = styled(MuiCard)(() => ({
    width: "400px",
@@ -15,6 +15,10 @@ const CardWrapper = styled(MuiCard)(() => ({
    borderRadius: "5px",
    boxSizing: "border-box",
 }));
+
+interface CardProps {
+   cardData: ICard;
+}
 
 const Card = ({ cardData }: CardProps) => {
    const navigate = useNavigate();

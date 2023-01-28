@@ -33,7 +33,7 @@ const CardContainer = () => {
       <>
          <ResultsCount variant="h3">Results: {data.length}</ResultsCount>
          <Stack sx={{ mt: "50px", gap: "45px", flexDirection: "row", flexWrap: "wrap", justifyContent: "center" }}>
-            {data.map((cardData: any) => (
+            {data.map((cardData: ICard) => (
                <Card key={cardData.id} cardData={cardData} />
             ))}
          </Stack>

@@ -5,7 +5,7 @@ import { textReduction, createReg } from "../../utils";
 
 const initialState: ICardsState = {
    data: [],
-   currentCard: {},
+   currentCard: {} as ICard,
    cards: [],
    keyWords: [],
    isCardsLoading: false,
@@ -23,19 +23,16 @@ export const fetchCardsData = createAsyncThunk("cards/fetchCardsData", async (_,
    }
 });
 
-export const fetchCardById = createAsyncThunk(
-   "cards/fetchCardById",
-   async (id: PayloadAction<string>, { rejectWithValue }) => {
-      try {
-         const { data } = await axios.get(`https://api.spaceflightnewsapi.net/v3/articles/${id}`).then((data) => data);
+export const fetchCardById = createAsyncThunk("cards/fetchCardById", async (id: string, { rejectWithValue }) => {
+   try {
+      const { data } = await axios.get(`https://api.spaceflightnewsapi.net/v3/articles/${id}`).then((data) => data);
 
-         return data;
-      } catch (err: unknown) {
-         const error = err as AxiosError;
-         return rejectWithValue(error.response);
-      }
+      return data;
+   } catch (err: unknown) {
+      const error = err as AxiosError;
+      return rejectWithValue(error.response);
    }
-);
+});
 
 const cardsSlice = createSlice({
    name: "cards",
@@ -43,7 +40,7 @@ const cardsSlice = createSlice({
 
    reducers: {
       removeCurrentCard: (state) => {
-         state.currentCard = {};
+         state.currentCard = {} as ICard;
       },
 
       setKeyWords: (state, action: PayloadAction<string[]>): void => {
@@ -61,22 +58,21 @@ const cardsSlice = createSlice({
          const intermediateArray: ICard[] = [];
 
          state.data.forEach((card) => {
-            let isAdded: boolean = false;
+            let isAdded = false;
 
             keyWordsArr.forEach((keyWord) => {
                const re = createReg(keyWord);
 
                if (re.test(card.title) && !isAdded) {
                   intermediateArray.unshift(card);
-                  isAdded = true;
-                  return;
                }
 
                if (re.test(textReduction(card.summary, 100)) && !isAdded) {
                   intermediateArray.push(card);
-                  isAdded = true;
-                  return;
                }
+
+               isAdded = true;
+               return;
             });
 
             state.cards = intermediateArray;
