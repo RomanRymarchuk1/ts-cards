@@ -1,13 +1,13 @@
-export interface ICardsState {
-   data: ICard[];
-   currentCard: ICard;
-   cards: ICard[];
+export interface IPostsState {
+   data: IPost[];
+   currentPost: IPost;
+   posts: IPost[];
    keyWords: string[];
-   isCardsLoading: boolean;
-   isCurrentCardLoading: boolean;
+   isPostsLoading: boolean;
+   isCurrentPostLoading: boolean;
 }
 
-export interface ICard {
+export interface IPost {
    id: number;
    featured: boolean;
    title: string;

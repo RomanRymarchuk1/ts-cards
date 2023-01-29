@@ -6,7 +6,7 @@ import { textReduction, dateConvesion, textAllocator } from "../../utils";
 import { useNavigate } from "react-router-dom";
 import parse from "html-react-parser";
 import { useAppSelector } from "../../hooks/hooks";
-import { ICard } from "../../models";
+import { IPost } from "../../models";
 
 const CardWrapper = styled(MuiCard)(() => ({
    width: "400px",
@@ -16,14 +16,14 @@ const CardWrapper = styled(MuiCard)(() => ({
    boxSizing: "border-box",
 }));
 
-interface CardProps {
-   cardData: ICard;
+interface PostItemProps {
+   postData: IPost;
 }
 
-const Card = ({ cardData }: CardProps) => {
+const PostItem = ({ postData }: PostItemProps) => {
    const navigate = useNavigate();
-   const { title, id, imageUrl, summary, publishedAt } = cardData;
-   const keyWords = useAppSelector((store) => store.cards.keyWords);
+   const { title, id, imageUrl, summary, publishedAt } = postData;
+   const keyWords = useAppSelector((store) => store.posts.keyWords);
 
    const onClick = (): void => {
       navigate(`/${id}`);
@@ -56,4 +56,4 @@ const Card = ({ cardData }: CardProps) => {
    );
 };
 
-export default Card;
+export default PostItem;

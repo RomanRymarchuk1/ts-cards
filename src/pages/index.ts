@@ -1,4 +1,4 @@
 import HomePage from "./Home/HomePage";
-import CardPage from "./Card/CardPage";
+import PostPage from "./Post/PostPage";
 
-export { HomePage, CardPage };
+export { HomePage, PostPage };

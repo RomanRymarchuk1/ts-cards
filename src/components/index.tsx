@@ -1,5 +1,5 @@
 import Header from "./Header/Header";
-import CardContainer from "./CardContainer/CardContainer";
+import PostsContainer from "./PostsContainer/PostsContainer";
 import CustomButton from "./CustomButton/CustomButton";
 
-export { Header, CardContainer, CustomButton };
+export { Header, PostsContainer, CustomButton };

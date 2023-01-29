@@ -3,10 +3,10 @@ import { useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import { CircularProgress, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
-import { ICard } from "../../models";
+import { IPost } from "../../models";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { fetchCardsData } from "../../store/slices/cardsSlice";
-import Card from "../Card/Card";
+import { fetchPostsData } from "../../store/slices/postsSlice";
+import PostItem from "../PostItem/PostItem";
 
 const ResultsCount = styled(Typography)(() => ({
    marginTop: "40px",
@@ -24,36 +24,36 @@ const ResultsCount = styled(Typography)(() => ({
    },
 }));
 
-const CardContainer = () => {
-   const isCardsLoading: boolean = useAppSelector((store) => store.cards.isCardsLoading);
-   const cards: ICard[] = useAppSelector((store) => store.cards.cards);
+const PostsContainer = () => {
+   const isPostsLoading = useAppSelector((store) => store.posts.isPostsLoading);
+   const posts: IPost[] = useAppSelector((store) => store.posts.posts);
    const dispatch = useAppDispatch();
 
-   const cardsRender = (data: ICard[]) => (
+   const postsRender = (data: IPost[]) => (
       <>
          <ResultsCount variant="h3">Results: {data.length}</ResultsCount>
          <Stack sx={{ mt: "50px", gap: "45px", flexDirection: "row", flexWrap: "wrap", justifyContent: "center" }}>
-            {data.map((cardData: ICard) => (
-               <Card key={cardData.id} cardData={cardData} />
+            {data.map((postData: IPost) => (
+               <PostItem key={postData.id} postData={postData} />
             ))}
          </Stack>
       </>
    );
 
    useEffect(() => {
-      dispatch(fetchCardsData());
+      dispatch(fetchPostsData());
    }, []);
 
-   if (cards.length > 0) return cardsRender(cards);
+   if (posts.length > 0) return postsRender(posts);
 
-   if (cards.length === 0 && !isCardsLoading)
+   if (posts.length === 0 && !isPostsLoading)
       return (
          <Typography sx={{ textAlign: "center", mt: "200px" }} variant="h2">
             Search turned up nothing
          </Typography>
       );
 
-   if (isCardsLoading)
+   if (isPostsLoading)
       return (
          <Stack sx={{ justifyContent: "center", alignItems: "center", height: "90vh" }}>
             <CircularProgress />
@@ -63,4 +63,4 @@ const CardContainer = () => {
    return null;
 };
 
-export default CardContainer;
+export default PostsContainer;

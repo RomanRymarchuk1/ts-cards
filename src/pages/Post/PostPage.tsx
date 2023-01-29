@@ -7,7 +7,7 @@ import { ReactComponent as Arrow } from "./assets/ArrowLeft.svg";
 import { CustomButton } from "../../components";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
-import { fetchCardById, removeCurrentCard } from "../../store/slices/cardsSlice";
+import { fetchPostById, removeCurrentPost } from "../../store/slices/postsSlice";
 
 const BannerImg = styled(Box)(() => ({
    position: "absolute",
@@ -20,7 +20,7 @@ const BannerImg = styled(Box)(() => ({
    zIndex: "-1",
 }));
 
-const CardWrapper = styled(Paper)(() => ({
+const PostWrapper = styled(Paper)(() => ({
    margin: "150px 75px 0",
    border: "1px solid #EAEAEA",
    borderRadius: "5px",
@@ -37,30 +37,30 @@ const Description = styled(Typography)(() => ({
    margin: "50px 0",
 }));
 
-const CardPage = () => {
+const PostPage = () => {
    const navigate = useNavigate();
    const dispatch = useAppDispatch();
    const { id } = useParams();
-   const card = useAppSelector((store) => store.cards.currentCard);
-   const isLoading = useAppSelector((store) => store.cards.isCurrentCardLoading);
+   const post = useAppSelector((store) => store.posts.currentPost);
+   const isLoading = useAppSelector((store) => store.posts.isCurrentPostLoading);
 
    useEffect(() => {
       if (typeof id === "string") {
-         dispatch(fetchCardById(id));
+         dispatch(fetchPostById(id));
       }
       return () => {
-         dispatch(removeCurrentCard());
+         dispatch(removeCurrentPost());
       };
    }, []);
 
-   if (card) {
+   if (post) {
       return (
          <>
-            <BannerImg sx={{ backgroundImage: ` url(${card.imageUrl})` }} />
-            <CardWrapper>
-               <Title variant="h2">{card.title}</Title>
-               <Description>{card.summary}</Description>
-            </CardWrapper>
+            <BannerImg sx={{ backgroundImage: ` url(${post.imageUrl})` }} />
+            <PostWrapper>
+               <Title variant="h2">{post.title}</Title>
+               <Description>{post.summary}</Description>
+            </PostWrapper>
             <CustomButton onClick={() => navigate("/")} m="35px 0 45px 155px">
                {<Arrow />} Back to homepage
             </CustomButton>
@@ -78,4 +78,4 @@ const CardPage = () => {
    return null;
 };
 
-export default CardPage;
+export default PostPage;

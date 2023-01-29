@@ -1,5 +1,5 @@
-import createReg from "./createReg";
-import textReduction from "./textReduction";
+import createReg from "../createReg/createReg";
+import textReduction from "../textReduction/textReduction";
 
 const textAllocator = (text: string, words: string[], isDescription: boolean): string => {
    let finalText: string = isDescription ? textReduction(text, 100) : text;

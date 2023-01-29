@@ -2,8 +2,8 @@ import { ChangeEvent } from "react";
 import { ReactComponent as SearchIcon } from "./assets/Search.svg";
 import { InputBase, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useDispatch } from "react-redux";
-import { resetCardsAndKeyWords, setFilteredData, setKeyWords } from "../../store/slices/cardsSlice";
+import { resetPostsAndKeyWords, setFilteredData, setKeyWords } from "../../store/slices/postsSlice";
+import { useAppDispatch } from "../../hooks/hooks";
 
 const Search = styled("div")(() => ({
    position: "relative",
@@ -36,7 +36,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 const Header = () => {
-   const dispatch = useDispatch();
+   const dispatch = useAppDispatch();
 
    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
@@ -52,7 +52,7 @@ const Header = () => {
       }
 
       if (value.length === 0) {
-         dispatch(resetCardsAndKeyWords());
+         dispatch(resetPostsAndKeyWords());
       }
    };
 
