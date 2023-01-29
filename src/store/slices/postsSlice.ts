@@ -50,7 +50,6 @@ const postsSlice = createSlice({
       resetPostsAndKeyWords: (state) => {
          state.keyWords = [];
          state.posts = state.data;
-         console.log(state.posts);
       },
 
       setFilteredData: (state, action: PayloadAction<string[]>): void => {
@@ -78,10 +77,11 @@ const postsSlice = createSlice({
                   return;
                }
             });
-
-            state.posts = [...matchInTitleArr, ...intermediateArr];
-            state.isPostsLoading = false;
          });
+
+         const cleanRes = new Set([...matchInTitleArr, ...intermediateArr]);
+         state.posts = [...cleanRes];
+         state.isPostsLoading = false;
       },
    },
 

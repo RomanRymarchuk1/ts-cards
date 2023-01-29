@@ -42,10 +42,9 @@ const Header = () => {
       const value = e.target.value;
 
       if (value[value.length - 1] === " ") {
-         const keyWords = value
-            .split(" ")
-            .slice(0, -1)
-            .filter((word: string) => word !== "");
+         const keyWords = value.split(" ").filter((word: string) => word !== "");
+
+         console.log(keyWords);
 
          dispatch(setKeyWords(keyWords));
          dispatch(setFilteredData(keyWords));
