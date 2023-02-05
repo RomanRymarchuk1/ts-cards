@@ -4,6 +4,7 @@ import { InputBase, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { resetPostsAndKeyWords, setFilteredData, setKeyWords } from "../../store/slices/postsSlice";
 import { useAppDispatch } from "../../hooks/hooks";
+import debounce from "lodash.debounce";
 
 const Search = styled("div")(() => ({
    position: "relative",
@@ -41,18 +42,15 @@ const Header = () => {
    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
 
-      if (value[value.length - 1] === " ") {
-         const keyWords = value.split(" ").filter((word: string) => word !== "");
-
-         console.log(keyWords);
-
-         dispatch(setKeyWords(keyWords));
-         dispatch(setFilteredData(keyWords));
-      }
-
       if (value.length === 0) {
          dispatch(resetPostsAndKeyWords());
+         return;
       }
+
+      const keyWords = value.split(" ").filter((word: string) => word !== "");
+
+      dispatch(setKeyWords(keyWords));
+      dispatch(setFilteredData(keyWords));
    };
 
    return (
@@ -62,7 +60,7 @@ const Header = () => {
             <SearchIconWrapper>
                <SearchIcon />
             </SearchIconWrapper>
-            <StyledInputBase onChange={onChange} placeholder="Search..." />
+            <StyledInputBase onChange={debounce(onChange, 350)} placeholder="Search..." />
          </Search>
       </header>
    );
