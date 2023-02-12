@@ -5,8 +5,9 @@ import { CustomButton } from "..";
 import { textReduction, dateConvesion, textAllocator } from "../../utils";
 import { useNavigate } from "react-router-dom";
 import parse from "html-react-parser";
-import { useAppSelector } from "../../hooks/hooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
 import { IPost } from "../../models";
+import { resetPostsAndKeyWords } from "../../store/slices/postsSlice";
 
 const CardWrapper = styled(MuiCard)(() => ({
    width: "400px",
@@ -14,6 +15,7 @@ const CardWrapper = styled(MuiCard)(() => ({
    border: "1px solid rgba(0, 0, 0, .05)",
    borderRadius: "5px",
    boxSizing: "border-box",
+   cursor: "pointer",
 }));
 
 interface PostItemProps {
@@ -22,15 +24,17 @@ interface PostItemProps {
 
 const PostItem = ({ postData }: PostItemProps) => {
    const navigate = useNavigate();
+   const dispatch = useAppDispatch();
    const { title, id, imageUrl, summary, publishedAt } = postData;
    const keyWords = useAppSelector((store) => store.posts.keyWords);
 
    const onClick = (): void => {
+      dispatch(resetPostsAndKeyWords());
       navigate(`/${id}`);
    };
 
    return (
-      <CardWrapper>
+      <CardWrapper onClick={onClick}>
          <CardMedia sx={{ width: "100%", height: "217px" }} image={imageUrl} />
          <CardContent sx={{ padding: "25px" }}>
             <Stack sx={{ flexDirection: "row", alignItems: "center", gap: "10px" }}>
