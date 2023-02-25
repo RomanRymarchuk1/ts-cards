@@ -5,13 +5,13 @@ const textAllocator = (text: string, words: string[], isDescription: boolean): s
    let finalText: string = isDescription ? textReduction(text, 100) : text;
 
    words.forEach((keyWord: string) => {
-      const re = createReg(keyWord);
+      const reg = createReg(keyWord);
 
-      if (re.test(finalText)) {
-         const a = finalText.match(re);
+      if (reg.test(finalText)) {
+         const matchArr = finalText.match(reg);
 
-         a?.forEach((el) => {
-            finalText = finalText.replace(re, `<span className="desired" >${el}</span>`);
+         matchArr?.forEach((el) => {
+            finalText = finalText.replace(reg, `<span className="desired" >${el}</span>`);
          });
       }
    });
