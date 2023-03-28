@@ -15,7 +15,8 @@ const Search = styled("div")(() => ({
       backgroundColor: "rgba(250, 250, 250)",
    },
    marginTop: "10px",
-   width: "600px",
+   width: "100%",
+   maxWidth: "600px",
 }));
 
 const SearchIconWrapper = styled("div")(() => ({
